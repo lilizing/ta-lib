@@ -2,7 +2,7 @@ var Big = require('big.js')
 var max = require('../ta-lib.max')
 var sum = require('../ta-lib.sum')
 
-var minus_dm = function (high, low, timePeriod) {
+var minus_di = function (high, low, close, timePeriod) {
   if (!(timePeriod instanceof Big || typeof timePeriod === 'string'))
     throw new Error('Timeperiod should be an instance of Big or string!')
 
@@ -11,13 +11,16 @@ var minus_dm = function (high, low, timePeriod) {
 
   var skip = 0
   var dm1 = []
+  var trs = []
   for (i = 0; i < high.length; i++) {
     if (high[i] instanceof Big) {
       skip = i
       dm1.push(NaN)
+      trs.push(NaN)
       break
     } else {
       dm1.push(NaN)
+      trs.push(NaN)
     }
   }
 
@@ -25,7 +28,15 @@ var minus_dm = function (high, low, timePeriod) {
   for (var i = skip + 1; i < high.length; i++) {
     var deltaHigh = high[i].minus(high[i - 1])
     var deltaLow = low[i - 1].minus(low[i])
-    dm1.push(deltaLow.gt(deltaHigh) ? max([deltaLow, zero]) : zero)
+    let dm = deltaLow.gt(deltaHigh) ? max([deltaLow, zero]) : zero
+
+    let tr1 = high[i].minus(low[i]).abs()
+    let tr2 = high[i].minus(close[i - 1]).abs()
+    let tr3 = low[i].minus(close[i - 1]).abs()
+    let tr = max([tr1, tr2, tr3, Big(1)])
+
+    dm1.push(dm)
+    trs.push(tr)
   }
 
   if (tp.eq('1')) return dm1
@@ -33,7 +44,7 @@ var minus_dm = function (high, low, timePeriod) {
   skip = 0
   var window = []
   var previous
-  return dm1.map((d, i) => {
+  var rDM = dm1.map((d, i) => {
     if (isNaN(d)) {
       skip += 1
       return NaN
@@ -49,7 +60,35 @@ var minus_dm = function (high, low, timePeriod) {
       return previous
     }
   })
+
+  skip = 0
+  var windowTR = []
+  var previousTR
+  var rTR = trs.map((d, i) => {
+    if (isNaN(d)) {
+      skip += 1
+      return NaN
+    } else if (i < timePeriodNum + skip - 1) {
+      windowTR.push(d)
+      return NaN
+    } else if (i === timePeriodNum + skip - 1) {
+      windowTR.push(d)
+      previousTR = sum(windowTR)
+      return previousTR
+    } else {
+      previousTR = previousTR.minus(previousTR.div(tp)).plus(d)
+      return previousTR
+    }
+  })
+
+  return rDM.map((d, i) => {
+    if (isNaN(d)) {
+      return NaN
+    } else {
+      return d.div(rTR[i]).mul(100)
+    }
+  })
 }
 
 
-module.exports = minus_dm
+module.exports = minus_di

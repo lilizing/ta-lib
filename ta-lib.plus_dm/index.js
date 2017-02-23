@@ -1,6 +1,6 @@
 var Big = require('big.js')
-var max = require('ta-lib.max')
-var sum = require('ta-lib.sum')
+var max = require('../ta-lib.max')
+var sum = require('../ta-lib.sum')
 
 var plus_dm = function (high, low, timePeriod) {
   if (!(timePeriod instanceof Big || typeof timePeriod === 'string'))
