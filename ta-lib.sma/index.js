@@ -1,4 +1,4 @@
-var sum = require('ta-lib.sum')
+var sum = require('../ta-lib.sum')
 var Big = require('big.js')
 
 var sma = function (values, timeperiod = '30') {

@@ -1,5 +1,5 @@
-var sma = require('ta-lib.sma')
-var stddev = require('ta-lib.stddev')
+var sma = require('../ta-lib.sma')
+var stddev = require('../ta-lib.stddev')
 var Big = require('big.js')
 
 var bbands = (values, timeperiod = '20', nbdevup = '2', nbdevdn = '2') => {

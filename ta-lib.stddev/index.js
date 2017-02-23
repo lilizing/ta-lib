@@ -1,4 +1,4 @@
-var average = require('ta-lib.average')
+var average = require('../ta-lib.average')
 var Big = require('big.js')
 
 var standardDeviation = function (values) {
