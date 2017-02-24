@@ -18,7 +18,7 @@ var adx = function (high, low, close, timePeriod) {
     if (isNaN(d)) {
       return NaN
     } else {
-      return d.minus(minusDI[i]).abs().div(d.plus(minusDI[i])).mul(100)
+      return d.minus(minusDI[i]).abs().div(d.plus(minusDI[i])).times(Big('100'))
     }
   })
 
