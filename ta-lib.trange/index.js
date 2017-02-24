@@ -1,6 +1,6 @@
 var Big = require('big.js')
-var max = require('ta-lib.max')
-var sum = require('ta-lib.sum')
+var max = require('../ta-lib.max')
+var sum = require('../ta-lib.sum')
 
 var trange = function (high, low, close, timePeriod = '0') {
   if (!(timePeriod instanceof Big || typeof timePeriod === 'string'))
