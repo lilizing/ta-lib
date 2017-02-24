@@ -1,7 +1,6 @@
 var Big = require('big.js')
 var max = require('../ta-lib.max')
 var sum = require('../ta-lib.sum')
-// var sma = require('../ta-lib.sma')
 var plus_di = require('../ta-lib.plus_di')
 var minus_di = require('../ta-lib.minus_di')
 
