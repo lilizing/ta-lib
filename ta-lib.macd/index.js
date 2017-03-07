@@ -1,4 +1,4 @@
-var ema = require('ta-lib.ema')
+var ema = require('../ta-lib.ema')
 var Big = require('big.js')
 
 var macd = (values, fastPeriod = '12', slowPeriod = '26', signalPeriod = '9')=> {
